@@ -23,9 +23,16 @@ spring:
     username: doadmin
     password: AVNS_OFPKLGNpLjeiNGAY9Xk
     driver-class-name: org.postgresql.Driver
+
+#  datasource:
+#    url: jdbc:postgresql://db-postgresql-sgp1-05819-do-user-17117566-0.d.db.ondigitalocean.com:25060/defaultdb?sslmode=require
+#    username: doadmin
+#    password: AVNS_BlGa9mf1p3HH-EhTEP8
+#    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

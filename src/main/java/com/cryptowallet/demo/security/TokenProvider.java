@@ -2,14 +2,12 @@ package com.cryptowallet.demo.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -37,16 +35,14 @@ public class TokenProvider {
         byte[] signingKey = jwtSecret.getBytes();
 
         return Jwts.builder()
-                .header().add("typ", TOKEN_TYPE)
-                .and()
-                .signWith(Keys.hmacShaKeyFor(signingKey), Jwts.SIG.HS512)
-                .expiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant()))
-                .issuedAt(Date.from(ZonedDateTime.now().toInstant()))
-                .id(UUID.randomUUID().toString())
-                .issuer(TOKEN_ISSUER)
-                .audience().add(TOKEN_AUDIENCE)
-                .and()
-                .subject(user.getUsername())
+                .setHeaderParam("typ", TOKEN_TYPE)
+                .signWith(SignatureAlgorithm.HS512, signingKey)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMinutes * 60 * 1000))
+                .setIssuedAt(new Date())
+                .setId(UUID.randomUUID().toString())
+                .setIssuer(TOKEN_ISSUER)
+                .setAudience(TOKEN_AUDIENCE)
+                .setSubject(user.getUsername())
                 .claim("rol", roles)
                 .claim("name", user.getName())
                 .claim("preferred_username", user.getUsername())
@@ -59,9 +55,8 @@ public class TokenProvider {
             byte[] signingKey = jwtSecret.getBytes();
 
             Jws<Claims> jws = Jwts.parser()
-                    .verifyWith(Keys.hmacShaKeyFor(signingKey))
-                    .build()
-                    .parseSignedClaims(token);
+                    .setSigningKey(signingKey)
+                    .parseClaimsJws(token);
 
             return Optional.of(jws);
         } catch (ExpiredJwtException exception) {

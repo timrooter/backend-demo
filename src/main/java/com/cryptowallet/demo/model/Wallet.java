@@ -2,7 +2,7 @@ package com.cryptowallet.demo.model;
 
 import com.cryptowallet.demo.service.CardUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,67 +47,95 @@ public class Wallet {
 
     public void addBalance(String currency, double amount) {
         switch (currency) {
-            case "ethereum" -> ethereum += amount;
-            case "ripple" -> ripple += amount;
-            case "tether" -> tether += amount;
-            case "binancecoin" -> binancecoin += amount;
-            case "solana" -> solana += amount;
-            case "bitcoin" -> bitcoin += amount;
-            case "usd" -> usd += amount;
-            case "kzt" -> kzt += amount;
+            case "ethereum":
+                ethereum += amount;
+                break;
+            case "ripple":
+                ripple += amount;
+                break;
+            case "tether":
+                tether += amount;
+                break;
+            case "binancecoin":
+                binancecoin += amount;
+                break;
+            case "solana":
+                solana += amount;
+                break;
+            case "bitcoin":
+                bitcoin += amount;
+                break;
+            case "usd":
+                usd += amount;
+                break;
+            case "kzt":
+                kzt += amount;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown currency: " + currency);
         }
     }
 
     public boolean subtractBalance(String currency, double amount) {
         switch (currency) {
-            case "ethereum" -> {
+            case "ethereum":
                 if (ethereum < amount) return false;
                 ethereum -= amount;
-            }
-            case "ripple" -> {
+                break;
+            case "ripple":
                 if (ripple < amount) return false;
                 ripple -= amount;
-            }
-            case "tether" -> {
+                break;
+            case "tether":
                 if (tether < amount) return false;
                 tether -= amount;
-            }
-            case "binancecoin" -> {
+                break;
+            case "binancecoin":
                 if (binancecoin < amount) return false;
                 binancecoin -= amount;
-            }
-            case "solana" -> {
+                break;
+            case "solana":
                 if (solana < amount) return false;
                 solana -= amount;
-            }
-            case "bitcoin" -> {
+                break;
+            case "bitcoin":
                 if (bitcoin < amount) return false;
                 bitcoin -= amount;
-            }
-            case "usd" -> {
+                break;
+            case "usd":
                 if (usd < amount) return false;
                 usd -= amount;
-            }
-            case "kzt" -> {
+                break;
+            case "kzt":
                 if (kzt < amount) return false;
                 kzt -= amount;
-            }
-            default -> throw new IllegalArgumentException("Unknown currency: " + currency);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown currency: " + currency);
         }
         return true;
     }
 
     public double getBalance(String currency) {
-        return switch (currency) {
-            case "ethereum" -> ethereum;
-            case "ripple" -> ripple;
-            case "tether" -> tether;
-            case "binancecoin" -> binancecoin;
-            case "solana" -> solana;
-            case "bitcoin" -> bitcoin;
-            case "usd" -> usd;
-            case "kzt" -> kzt;
-            default -> throw new IllegalArgumentException("Unknown currency: " + currency);
-        };
+        switch (currency) {
+            case "ethereum":
+                return ethereum;
+            case "ripple":
+                return ripple;
+            case "tether":
+                return tether;
+            case "binancecoin":
+                return binancecoin;
+            case "solana":
+                return solana;
+            case "bitcoin":
+                return bitcoin;
+            case "usd":
+                return usd;
+            case "kzt":
+                return kzt;
+            default:
+                throw new IllegalArgumentException("Unknown currency: " + currency);
+        }
     }
 }

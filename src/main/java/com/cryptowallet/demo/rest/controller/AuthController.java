@@ -8,7 +8,7 @@ import com.cryptowallet.demo.rest.dto.SignUpRequest;
 import com.cryptowallet.demo.security.TokenProvider;
 import com.cryptowallet.demo.security.WebSecurityConfig;
 import com.cryptowallet.demo.service.UserService;
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;

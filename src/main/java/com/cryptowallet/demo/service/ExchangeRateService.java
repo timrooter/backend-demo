@@ -10,6 +10,7 @@ import com.cryptowallet.demo.repository.UserRepository;
 import com.cryptowallet.demo.repository.WalletRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -131,6 +132,7 @@ public class ExchangeRateService {
 
 
     @Scheduled(fixedRate = 60000) // обновление каждые 60 секунд
+    @CacheEvict(value = "exchangeRates", allEntries = true)
     public void updateExchangeRates() {
         Map<String, Double> currentRates = getCurrentExchangeRates();
         currentRates.forEach((currency, rate) -> {
@@ -145,6 +147,7 @@ public class ExchangeRateService {
             exchangeRateRepository.save(exchangeRate);
         });
     }
+
 
     // Additional methods for CRUD operations
 
